@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <!-- Form -->
+    <header id="top" class="header">
+        <div class="text-vertical-center">
+            <h1> Find a Station </h1> <br>
+            <form role="form" method="POST" id="submittal">
+                <input type="hidden" class="form-control" id='latitude' name="latitude">
+                <input type="hidden" class="form-control" id='longitude' name="longitude">
+                <input type="hidden" class="form-control" id="which" name="which">
+
+                <div class="btn-beside" style="text-align:center">
+                    <button onclick="getLocationBike()" type="button" class="btn-lg btn-dark" value="Bike"> Find a Bike </button>
+                    <div> </div> <br>
+                    <button onclick="getLocationDock()" type="button" class="btn-lg btn-dark" value="Dock"> Find a Dock </button>
+                </div>
+            </form>
+        </div>
+    </header>
+<script>
+function getLocationBike() {
+        navigator.geolocation.getCurrentPosition(showPositionBike,
+        errorGettingPosition,
+        {'enableHighAccuracy': true, 'timeout': 10000, 'maximumAge': 5});
+    }
+function showPositionBike(position) {
+    document.getElementById('latitude').value = position.coords.latitude;
+    document.getElementById('longitude').value = position.coords.longitude;
+    document.getElementById('which').value = "Bike";
+    document.getElementById('submittal').submit();
+}
+
+
+function getLocationDock() {
+        navigator.geolocation.getCurrentPosition(showPositionDock,
+        errorGettingPosition,
+        {'enableHighAccuracy': true, 'timeout': 10000, 'maximumAge': 5});
+    }
+
+function showPositionDock(position) {
+    document.getElementById('latitude').value = position.coords.latitude;
+    document.getElementById('longitude').value = position.coords.longitude;
+    document.getElementById('which').value = "Dock";
+    document.getElementById('submittal').submit();
+}
+
+
+function errorGettingPosition(err)
+{
+    if(err.code==1)
+    {
+        alert("User denied geolocation.");
+        }
+    else if(err.code==2)
+    {
+        alert("Position unavailable.");
+        }
+    else if(err.code==3)
+    {
+        alert("Timeout expired.");
+        }
+    else
+    {
+        alert("ERROR:" + err.message);
+        }
+}
+
+</script>
+
+
+{% endblock %}

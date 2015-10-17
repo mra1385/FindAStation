@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <!-- Map -->
+<section id="contact" class="map" align="center">
+    <iframe width="100%" height="100%" frameborder="0" scrolling="yes"
+            marginheight="0" marginwidth="0"
+            src="https://maps.google.com/maps?f=q&amp;source=s_q&amp;hl=en&amp;
+            geocode=&amp;q={{latitude_form}}+{{longitude_form}}&amp;
+            aq=0&amp;sspn=0.128789,0.264187&amp;ie=UTF8
+            &amp;hq={{latitude_form}}+{{longitude_form}}&amp;t=m&amp;
+            z=15&amp;iwloc=A&amp;output=embed"></iframe>
+
+    <small>
+        <a href="https://maps.google.com/maps?f=q&amp;source=embed&amp;hl=en&amp;
+        geocode=&amp;q={{latitude_form}}+{{longitude_form}}}&amp;aq=0
+        &amp;sspn=0.128789,0.264187
+        &amp;ie=UTF8&amp;hq={{latitude_form}}+{{longitude_form}}
+        &amp;t=m&amp;z=15&amp;iwloc=A"></a>
+    </small>
+</section>
+
+<!-- Table -->
+<div class="container" align="center">
+    <table class="table-striped table-condensed table-responsive">
+        <h3> Click on a station for directions. </h3>
+        <tbody align="center">
+            <tr>
+                <th class="th" align="left"> Station Name </th>
+                <th class="th">Distance (miles)</th>
+                <th class="th">Available {{query}} </th>
+
+            </tr>
+        </tbody>
+        <tbody>
+        {% for station in stations %}
+        <tr align="center">
+            <td align="left"> <a href='http://maps.google.com/maps?mode=walking&amp;daddr={{station[3]}}+{{station[4]}}&amp;&saddr={{latitude_form}}+{{longitude_form}}'>{{station[0]}}</a> </td>
+            <td> {{station[1]}} </td>
+            <td> {{station[2]}} </td>
+
+            <td> </td>
+            {% endfor %}
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}
