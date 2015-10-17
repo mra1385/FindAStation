@@ -23,7 +23,7 @@
 function getLocationBike() {
         navigator.geolocation.getCurrentPosition(showPositionBike,
         errorGettingPosition,
-        {'enableHighAccuracy': true, 'timeout': 10000, 'maximumAge': 5});
+        {timeout:10000, enableHighAccuracy: true, maximumAge: 5});
     }
 function showPositionBike(position) {
     document.getElementById('latitude').value = position.coords.latitude;
@@ -36,7 +36,7 @@ function showPositionBike(position) {
 function getLocationDock() {
         navigator.geolocation.getCurrentPosition(showPositionDock,
         errorGettingPosition,
-        {'enableHighAccuracy': true, 'timeout': 10000, 'maximumAge': 5});
+        {timeout: 10000, enableHighAccuracy: true, maximumAge: 5});
     }
 
 function showPositionDock(position) {
