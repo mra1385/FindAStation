@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5e4f2217-239b-4847-ba8d-c2e8900fc56b" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/FAS/templates/home.html" afterPath="$PROJECT_DIR$/FAS/templates/home.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/FAS/static/img/bg2.JPG" afterPath="$PROJECT_DIR$/FAS/static/img/bg2.JPG" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/FAS/static/css/stylish-portfolio.css" afterPath="$PROJECT_DIR$/FAS/static/css/stylish-portfolio.css" />
     </list>
     <ignored path="FindAStation.iws" />
@@ -37,8 +37,8 @@
       <file leaf-file-name="stylish-portfolio.css" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/FAS/static/css/stylish-portfolio.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5034965">
-              <caret line="159" column="12" selection-start-line="159" selection-start-column="12" selection-end-line="159" selection-end-column="12" />
+            <state vertical-scroll-proportion="0.5332168">
+              <caret line="160" column="30" selection-start-line="160" selection-start-column="30" selection-end-line="160" selection-end-column="30" />
               <folding />
             </state>
           </provider>
@@ -581,8 +581,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/FAS/static/css/stylish-portfolio.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5034965">
-          <caret line="159" column="12" selection-start-line="159" selection-start-column="12" selection-end-line="159" selection-end-column="12" />
+        <state vertical-scroll-proportion="0.5332168">
+          <caret line="160" column="30" selection-start-line="160" selection-start-column="30" selection-end-line="160" selection-end-column="30" />
           <folding />
         </state>
       </provider>
