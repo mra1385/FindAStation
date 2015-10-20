@@ -122,6 +122,29 @@ class LoadStations:
             self.station_location = station_location
             self.station_status = station_status
 
+        elif country.encode('ascii', 'ignore') == 'United States' \
+                and town.encode('ascii', 'ignore') in ['Philadelphia']:
+            station_location = dict()
+            station_status = dict()
+            url = 'https://api.phila.gov/bike-share-stations/v1'
+
+            class MyOpener(urllib.FancyURLopener):
+                version = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; it; ' \
+                      'rv:1.8.1.11)Gecko/20071127 Firefox/2.0.0.11'
+
+            myopener = MyOpener()
+            v = myopener.open(url)
+            j = json.load(v)
+            for i in j['features']:
+                station_location[i['properties']['name']] = \
+                    {'Latitude': float(i['geometry']['coordinates'][1]),
+                     'Longitude': float(i['geometry']['coordinates'][0])}
+                station_status[i['properties']['name']] = \
+                    [i['properties']['bikesAvailable'],
+                     i['properties']['docksAvailable']]
+            self.station_location = station_location
+            self.station_status = station_status
+
         # query Bay Area Bikes for station locations and status if
         # country/city is Canada/Montreal
         elif country.encode('ascii', 'ignore') == 'Canada' \
@@ -252,7 +275,7 @@ class LoadStations:
         return sorted(closest_station, key=itemgetter(1))[0:5]
 
 
-#### Testing ########
+# Testing Below #
 
 # converts latitude/longitude into country/city name using
 # Google Maps API
@@ -280,7 +303,6 @@ class LoadStations:
 # nyc= (40.7127, -74.0059)
 # sf= (37.7833, -122.4167)
 # chicago= (41.8369, -87.6847)
-#
-# test = LoadStations(montreal[0], montreal[1])
+# philly = (39.9500, -75.1667)
+# test = LoadStations(philly[0], philly[1])
 # print test.find_closest_bike()
-
