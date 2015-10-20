@@ -23,10 +23,10 @@ def index_page():
     elif request.method == 'POST':
         latitude_form = request.form['latitude']
         longitude_form = request.form['longitude']
-        user_query = API.LoadStations()
-        stations = user_query.find_closest_bike(latitude_form, longitude_form)
+        user_query = API.LoadStations(latitude_form, longitude_form)
 
         if request.form['which'] == "Bike":
+            stations = user_query.find_closest_bike()
             return render_template('results.html', title='Home',
                                    page_dict=setup_page_dict(),
                                    app_name=app.config['APP_NAME'],
@@ -34,7 +34,9 @@ def index_page():
                                    latitude_form = latitude_form,
                                    longitude_form = longitude_form,
                                    query = "Bikes")
+
         elif request.form['which'] == "Dock":
+            stations = user_query.find_closest_dock()
             return render_template('results.html', title='Home',
                                     page_dict=setup_page_dict(),
                                     app_name=app.config['APP_NAME'],

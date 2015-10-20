@@ -20,10 +20,11 @@
         </div>
     </header>
 <script>
+
 function getLocationBike() {
         navigator.geolocation.getCurrentPosition(showPositionBike,
         errorGettingPosition,
-        {timeout:10000, enableHighAccuracy: true, maximumAge: 5});
+        {timeout:10000, enableHighAccuracy: true, maximumAge: 10000});
     }
 function showPositionBike(position) {
     document.getElementById('latitude').value = position.coords.latitude;
@@ -36,7 +37,7 @@ function showPositionBike(position) {
 function getLocationDock() {
         navigator.geolocation.getCurrentPosition(showPositionDock,
         errorGettingPosition,
-        {timeout: 10000, enableHighAccuracy: true, maximumAge: 5});
+        {timeout: 10000, enableHighAccuracy: true, maximumAge: 10000});
     }
 
 function showPositionDock(position) {

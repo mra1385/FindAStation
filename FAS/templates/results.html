@@ -36,11 +36,9 @@
         <tbody>
         {% for station in stations %}
         <tr align="center">
-            <td align="left"> <a href='http://maps.google.com/maps?mode=walking&amp;daddr={{station[3]}}+{{station[4]}}&amp;&saddr={{latitude_form}}+{{longitude_form}}'>{{station[0]}}</a> </td>
+            <td align="left"> <a href='http://maps.google.com/maps?&amp;daddr={{station[3]}}+{{station[4]}}&amp;&saddr={{latitude_form}}+{{longitude_form}}&amp;mode=walking'>{{station[0]}}</a> </td>
             <td> {{station[1]}} </td>
             <td> {{station[2]}} </td>
-
-            <td> </td>
             {% endfor %}
         </tr>
         </tbody>
