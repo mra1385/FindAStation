@@ -25,20 +25,20 @@
 <div class="container" align="center">
     <table class="table-striped table-condensed table-responsive">
         <h3> Click on a station for directions. </h3>
-        <tbody align="center">
+        <tbody>
             <tr>
                 <th class="th"> Station Name </th>
-                <th align="right">Distance (miles)</th>
-                <th align="text-right">Available {{query}} </th>
+                <th class="th text-center">Distance (miles)</th>
+                <th class="th text-center">Available {{query}} </th>
 
             </tr>
         </tbody>
         <tbody>
         {% for station in stations %}
-        <tr align="center">
-            <td align="left"> <a href='http://maps.google.com/maps?&amp;daddr={{station[3]}}+{{station[4]}}&amp;&saddr={{latitude_form}}+{{longitude_form}}&amp;mode=walking'>{{station[0]}}</a> </td>
-            <td> {{station[1]}} </td>
-            <td> {{station[2]}} </td>
+        <tr>
+            <td class="td text-left"> <a href='http://maps.google.com/maps?&amp;daddr={{station[3]}}+{{station[4]}}&amp;&saddr={{latitude_form}}+{{longitude_form}}&amp;mode=walking'>{{station[0]}}</a> </td>
+            <td class="td text-center"> {{station[1]}} </td>
+            <td class="td text-center"> {{station[2]}} </td>
             {% endfor %}
         </tr>
         </tbody>
