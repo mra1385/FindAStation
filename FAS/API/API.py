@@ -1,9 +1,11 @@
 # import modules
 from math import radians, cos, sin, asin, sqrt
+import urllib.request
 import urllib
 import json
 import xml.etree.ElementTree as ET
 from operator import itemgetter
+import requests
 
 
 # create class with station coordinates/status, and methods to
@@ -19,9 +21,12 @@ class LoadStations:
         # Google Maps API
         url = "http://maps.googleapis.com/maps/api/geocode/json?"
         url += "latlng=%s,%s&sensor=false" % (latitude, longitude)
-        v = urllib.urlopen(url).read()
+        v = urllib.request.urlopen(url).read()
         j = json.loads(v)
-        components = j['results'][0]['address_components']
+        try:
+            components = j['results'][0]['address_components']
+        except:
+            components = []
         country = town = None
         for c in components:
             if "country" in c['types']:
@@ -29,15 +34,12 @@ class LoadStations:
             if "locality" in c['types']:
                 town = c['long_name']
 
-        # query CaBi for station locations and status if country/city is
+        # query for station locations and status if country/city is
         # United States/Washington area
-        if country.encode('ascii', 'ignore') == 'United States' \
-                and town.encode('ascii', 'ignore') in ['Washington',
-                                                       'Arlington',
-                                                       'Alexandria']:
+        if country == 'United States' and town in ['Washington','Arlington','Alexandria']:
             xml_path = 'https://www.capitalbikeshare.com/data/stations/' \
                        'bikeStations.xml'
-            tree = ET.parse(urllib.urlopen(xml_path))
+            tree = ET.parse(urllib.request.urlopen(xml_path))
             root = tree.getroot()
             station_location = dict()
             station_status = dict()
@@ -49,14 +51,13 @@ class LoadStations:
             self.station_location = station_location
             self.station_status = station_status
 
-        # query Citi Bike for station locations and status if country/city is
+        # query for station locations and status if country/city is
         # United States/New York
-        elif country.encode('ascii', 'ignore') == 'United States' \
-                and town.encode('ascii', 'ignore') in ['New York']:
+        elif country == 'United States' and town in 'New York':
             station_location = dict()
             station_status = dict()
             url = 'https://www.citibikenyc.com/stations/json'
-            v = urllib.urlopen(url).read()
+            v = urllib.request.urlopen(url).read()
             j = json.loads(v)
             for i in j['stationBeanList']:
                 station_location[i['stationName']] = \
@@ -67,14 +68,13 @@ class LoadStations:
             self.station_location = station_location
             self.station_status = station_status
 
-        # query Divvy Bike for station locations and status if country/city is
+        # query for station locations and status if country/city is
         # United States/Chicago
-        elif country.encode('ascii', 'ignore') == 'United States' \
-                and town.encode('ascii', 'ignore') in ['Chicago']:
+        elif country == 'United States' and town in 'Chicago':
             station_location = dict()
             station_status = dict()
             url = 'https://www.divvybikes.com/stations/json'
-            v = urllib.urlopen(url).read()
+            v = urllib.request.urlopen(url).read()
             j = json.loads(v)
             for i in j['stationBeanList']:
                 station_location[i['stationName']] = \
@@ -84,14 +84,13 @@ class LoadStations:
             self.station_location = station_location
             self.station_status = station_status
 
-        # query Bikeshare Toronto for station locations and status if
+        # search for station locations and status if
         # country/city is Canada/Toronto
-        elif country.encode('ascii', 'ignore') == 'Canada' \
-                and town.encode('ascii', 'ignore') in ['Toronto']:
+        elif country == 'Canada' and town in 'Toronto':
             station_location = dict()
             station_status = dict()
             url = 'http://www.bikesharetoronto.com/stations/json'
-            v = urllib.urlopen(url).read()
+            v = urllib.request.urlopen(url).read()
             j = json.loads(v)
             for i in j['stationBeanList']:
                 station_location[i['stationName']] = \
@@ -101,18 +100,14 @@ class LoadStations:
             self.station_location = station_location
             self.station_status = station_status
 
-        # query Bay Area Bikes for station locations and status if
+        # query for station locations and status if
         # country/city is United States/San Francisco Bay area
-        elif country.encode('ascii', 'ignore') == 'United States' \
-                and town.encode('ascii', 'ignore') in ['San Francisco',
-                                                       'Palo Alto',
-                                                       'Redwood City',
-                                                       'Mountain View',
-                                                       'San Jose']:
+        elif country == 'United States' \
+                and town in ['San Francisco','Palo Alto', 'Redwood City', 'Mountain View', 'San Jose']:
             station_location = dict()
             station_status = dict()
             url = 'http://www.bayareabikeshare.com/stations/json'
-            v = urllib.urlopen(url).read()
+            v = urllib.request.urlopen(url).read()
             j = json.loads(v)
             for i in j['stationBeanList']:
                 station_location[i['stationName']] = \
@@ -122,13 +117,12 @@ class LoadStations:
             self.station_location = station_location
             self.station_status = station_status
 
-        elif country.encode('ascii', 'ignore') == 'United States' \
-                and town.encode('ascii', 'ignore') in ['Philadelphia']:
+        elif country == 'United States' and town in 'Philadelphia':
             station_location = dict()
             station_status = dict()
-            url = 'https://api.phila.gov/bike-share-stations/v1'
+            url = 'https://www.rideindego.com/stations/json/'
 
-            class MyOpener(urllib.FancyURLopener):
+            class MyOpener(urllib.request.FancyURLopener):
                 version = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; it; ' \
                       'rv:1.8.1.11)Gecko/20071127 Firefox/2.0.0.11'
 
@@ -145,32 +139,28 @@ class LoadStations:
             self.station_location = station_location
             self.station_status = station_status
 
-        # query Bay Area Bikes for station locations and status if
+        # query for station locations and status if
         # country/city is Canada/Montreal
-        elif country.encode('ascii', 'ignore') == 'Canada' \
-                and town.encode('ascii', 'ignore') in ['Montral']:
+        elif country == 'Canada' and town in 'Montréal':
             xml_path = 'http://montreal.bixi.com/data/bikeStations.xml'
-            tree = ET.parse(urllib.urlopen(xml_path))
+            tree = ET.parse(urllib.request.urlopen(xml_path))
             root = tree.getroot()
             station_location = dict()
             station_status = dict()
             for child in root:
-                station_location[child[1].text.encode('utf-8')] = \
-                    {'Latitude': float(child[3].text),
+                station_location[child[1].text] = \
+                    {'Latitude': float(child[4].text),
                      'Longitude': float(child[4].text)}
-                station_status[child[1].text.encode('utf-8')] = \
-                    [child[11].text, child[12].text]
+                station_status[child[1].text] = \
+                    [child[12].text, child[13].text]
             self.station_location = station_location
             self.station_status = station_status
 
-        # query Bay Area Bikes for station locations and status if
+        # query for station locations and status if
         # country/city is United Kingdom/London
-        elif country.encode('ascii', 'ignore') == 'United Kingdom' \
-                and town.encode('ascii', 'ignore') in ['London']:
-            xml_path = 'https://tfl.gov.uk/tfl/syndication/feeds/' \
-                       'cycle-hire/livecyclehireupdates.xml'
-            tree = ET.parse(urllib.urlopen(xml_path))
-            root = tree.getroot()
+        elif country == 'United Kingdom' and town in 'London':
+            xml_path = 'https://tfl.gov.uk/tfl/syndication/feeds/cycle-hire/livecyclehireupdates.xml'
+            root = ET.fromstring(requests.get(xml_path).content)
             station_location = dict()
             station_status = dict()
             for child in root:
@@ -181,12 +171,11 @@ class LoadStations:
             self.station_location = station_location
             self.station_status = station_status
 
-        # query Bay Area Bikes for station locations and status if
+        # query for station locations and status if
         # country/city is United States/Boston
-        elif country.encode('ascii', 'ignore') == 'United States' \
-                and town.encode('ascii', 'ignore') in ['Boston']:
+        elif country == 'United States' and town in 'Boston':
             xml_path = 'http://www.thehubway.com/data/stations/bikeStations.xml'
-            tree = ET.parse(urllib.urlopen(xml_path))
+            tree = ET.parse(urllib.request.urlopen(xml_path))
             root = tree.getroot()
             station_location = dict()
             station_status = dict()
@@ -198,12 +187,11 @@ class LoadStations:
             self.station_location = station_location
             self.station_status = station_status
 
-        # query Bay Area Bikes for station locations and status if
+        # query for station locations and status if
         # country/city is United States/Minneapolis
-        elif country.encode('ascii', 'ignore') == 'United States' \
-                and town.encode('ascii', 'ignore') in ['Minneapolis']:
+        elif country == 'United States' and town in 'Minneapolis':
             xml_path = 'https://secure.niceridemn.org/data2/bikeStations.xml'
-            tree = ET.parse(urllib.urlopen(xml_path))
+            tree = ET.parse(urllib.request.urlopen(xml_path))
             root = tree.getroot()
             station_location = dict()
             station_status = dict()
@@ -232,7 +220,7 @@ class LoadStations:
 
     def find_closest_bike(self):
         """
-        Funds closest station with available bike based on passed coordinates
+        Finds closest station with available bike based on passed coordinates
         and returns sorted list of three closest stations
         """
         closest_station = []
@@ -273,36 +261,3 @@ class LoadStations:
             else:
                 continue
         return sorted(closest_station, key=itemgetter(1))[0:5]
-
-
-# Testing Below #
-
-# converts latitude/longitude into country/city name using
-# Google Maps API
-# def city(latitude,longitude):
-#     url = "http://maps.googleapis.com/maps/api/geocode/json?"
-#     url += "latlng=%s,%s&sensor=false" % (latitude, longitude)
-#     v = urllib.urlopen(url).read()
-#     j = json.loads(v)
-#     components = j['results'][0]['address_components']
-#     country = town = None
-#     for c in components:
-#         if "country" in c['types']:
-#             country = c['long_name']
-#         if "locality" in c['types']:
-#             town = c['long_name']
-#     print town.encode('ascii', 'ignore'), country
-#
-#
-# toronto= (43.7, -79.4)
-# montreal= (45.5017, -73.5673)
-# dc= (38.9047, -77.0164)
-# minneapolis= (44.9788, -93.2650)
-# boston= (42.3601, -71.0589)
-# london= (51.5072, -0.1275)
-# nyc= (40.7127, -74.0059)
-# sf= (37.7833, -122.4167)
-# chicago= (41.8369, -87.6847)
-# philly = (39.9500, -75.1667)
-# test = LoadStations(philly[0], philly[1])
-# print test.find_closest_bike()
